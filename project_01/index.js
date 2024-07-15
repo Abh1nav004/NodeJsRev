@@ -9,14 +9,11 @@ const PORT = 8000;
 app.use(express.urlencoded({extended: false}));
 
 app.use((req,res,next)=>{
-    console.log('Hello from middleware 1');
-    req.myUserName = "abhinavsharma.dev";
-    next();
+    fs.appendFile('log.txt',`${Date.now()}:${req.ip}: ${req.method}:${req.path}\n`,(err,data)=>{
+        next();
+    });
 });
-app.use((req,res,next)=>{
-    console.log('Hello from middleware 2', req.myUserName);
-    next();
-});
+
 
 
 // for html rendering 
