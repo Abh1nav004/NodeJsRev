@@ -29,6 +29,8 @@ app.get('/users',(req,res)=>{
 
 // for rest api calls for developers
 app.get("/api/users",(req,res)=>{
+    res.setHeader('X-MyName',"Abhinav");
+ //Always add X to custom Header for good practice
     return res.json(users);
 });
 
