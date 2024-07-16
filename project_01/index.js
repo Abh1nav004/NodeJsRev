@@ -1,7 +1,6 @@
 const express = require("express");
 const fs = require('fs');
 const mongoose = require('mongoose');
-const users = require('./MOCK_DATA (1).json')
 
 
 const app = express();
@@ -32,7 +31,7 @@ const userSchema = new mongoose.Schema({
     gender:{
         type:String,
     },
-})
+},{ timestamps:true})
 
 const User = mongoose.model('user',userSchema);
 
@@ -48,10 +47,11 @@ app.use((req,res,next)=>{
 
 
 // for html rendering 
-app.get('/users',(req,res)=>{
+app.get('/users',async (req,res)=>{
+    const allDbUsers = await User.find({});
     const html = `
     <ul>
-    ${users.map((user)=>`<li>${user.first_name}</li>`).join("")};
+    ${allDbUsers.map((user)=>`<li>${user.firstName} - ${user.email}</li>`).join("")};
     </ul>
     `;
 
@@ -59,25 +59,25 @@ app.get('/users',(req,res)=>{
 });
 
 // for rest api calls for developers
-app.get("/api/users",(req,res)=>{
-    res.setHeader('X-MyName',"Abhinav");
- //Always add X to custom Header for good practice
-    return res.json(users);
+app.get("/api/users",async(req,res)=>{
+    const allDbUsers = await User.find({});
+    return res.json(allDbUsers);
 });
 
 app
 .route("/api/users/:id")
-.get((req,res)=>{
-    const id = Number(req.params.id);
-    const user = users.find((user)=>user.id===id);
+.get(async(req,res)=>{;
+    const user = await User.findById(req.params.id);
     if(!user) return res.status(404).json({msg:"User not found"});
     return res.json(user);
 })
-.patch((req,res)=>{
-        return res.json({ status: "pending"});
+.patch(async(req,res)=>{
+    await User.findByIdAndUpdate(req.params.id,{lastName: "Changed"})
+        return res.json({ status: "Success"});
 })
-.delete((req,res)=>{
-        return res.json({ status: "pending"});
+.delete(async(req,res)=>{
+    await User.findByIdAndDelete(req.params.id);
+        return res.json({ status: "Success"});
 });
 
 
@@ -100,8 +100,6 @@ app.post('/api/users',async(req,res)=>{
         gender: body.gender,
         jobTitle: body.job_title,
     });
-
-    console.log('result',result);
 
     return res.status(201).json({msg:"User created"});
 });
