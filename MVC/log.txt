@@ -1,0 +1,16 @@
+
+1721135186125:::1: GET:/api/users
+
+1721135201491:::1: GET:/api/users
+
+1721135223524:::1: GET:/api/users
+
+1721135314333:::1: POST:/api/users
+
+1721135321267:::1: GET:/api/users
+
+1721135374426:::1: GET:/api/users/669670d27b0d19f485d1c88d
+
+1721135394870:::1: DELETE:/api/users/66963f7fa59a6145d1ea8f90
+
+1721135400548:::1: GET:/api/users
