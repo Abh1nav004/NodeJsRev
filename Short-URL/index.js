@@ -20,7 +20,7 @@ const userRoute = require("./routes/user");
 
 
 const { connect } = require("mongoose");
-const app = express();
+const app = express();  
 
 
 //Middlewares
